@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() { return request.auth != null; }
+    function uid() { return request.auth.uid; }
+    function userDoc() { return get(/databases/$(database)/documents/users/$(uid())); }
+    function isAdmin() { return isSignedIn() && userDoc().data.role == 'admin'; }
+    function isActive() { return isSignedIn() && userDoc().data.status != 'banned'; }
+
+    match /users/{userId} {
+      allow read: if isSignedIn() && (userId == uid() || isAdmin());
+      allow create: if isSignedIn() && userId == uid()
+        && request.resource.data.uid == uid();
+      allow update: if isActive() && (
+        isAdmin()
+        || (userId == uid() && request.resource.data.diff(resource.data).affectedKeys().toSet()
+          .difference(['name','phone','bankDetails','quickLinks','balanceHistory','referralClicks']).size() == 0)
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /tasks/{taskId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /submissions/{subId} {
+      allow read: if isSignedIn() && (resource.data.userId == uid() || isAdmin());
+      allow create: if isActive() && request.resource.data.userId == uid();
+      allow update, delete: if isAdmin();
+    }
+
+    match /withdrawals/{wdId} {
+      allow read: if isSignedIn() && (resource.data.userId == uid() || isAdmin());
+      allow create: if isActive() && (
+        (request.resource.data.userId == uid() && request.resource.data.status == 'pending')
+        || isAdmin()
+      );
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /plans/{planId} {
+      allow read: if isSignedIn() && (resource.data.active == true || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    match /earnings/{earnId} {
+      allow read: if isSignedIn() && (resource.data.userId == uid() || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    match /settings/{doc} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

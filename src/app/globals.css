@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary-50:  #F5E9FF;
+  --color-primary-100: #E9D3FF;
+  --color-primary-200: #D4A8FF;
+  --color-primary-300: #BC79FF;
+  --color-primary-400: #A14BFF;
+  --color-primary-500: #7E22CE;
+  --color-primary-600: #5E17A8;
+  --color-primary-700: #4B1187;
+  --color-primary-800: #3A0E67;
+  --color-primary-900: #2E0C4E;
+  --color-primary-950: #100422;
+
+  --color-secondary-50:  #FFF5CC;
+  --color-secondary-100: #FFEC99;
+  --color-secondary-200: #FFDF5C;
+  --color-secondary-300: #FFD32B;
+  --color-secondary-400: #FFC400;
+  --color-secondary-500: #E0AE00;
+  --color-secondary-600: #B38800;
+  --color-secondary-700: #866300;
+  --color-secondary-800: #5A4200;
+  --color-secondary-900: #2E2100;
+
+  --color-accent-50:  #FFE6F4;
+  --color-accent-100: #FFC2E3;
+  --color-accent-200: #FF8FD0;
+  --color-accent-300: #FF5CBE;
+  --color-accent-400: #FF3CBE;
+  --color-accent-500: #D62DA0;
+  --color-accent-600: #A31D7C;
+  --color-accent-700: #761158;
+  --color-accent-800: #4A0936;
+  --color-accent-900: #25041B;
+
+  --color-neutral-50:  #FBF7FF;
+  --color-neutral-100: #F3EAFF;
+  --color-neutral-200: #E6D6FF;
+  --color-neutral-300: #CBB6F0;
+  --color-neutral-400: #A48BCF;
+  --color-neutral-500: #7B62A8;
+  --color-neutral-600: #5A4486;
+  --color-neutral-700: #3E2E63;
+  --color-neutral-800: #271B45;
+  --color-neutral-900: #150E28;
+  --color-neutral-950: #0A0615;
+
+  --apron-bg-deep:   #2E0C4E;
+  --apron-bg-dark:   #100422;
+  --apron-gold:      #FFC400;
+  --apron-gold-dark: #E0AE00;
+  --apron-pink:      #FF3CBE;
+  --apron-pink-dark: #D62DA0;
+  --foreground:      #FFFFFF;
+  --background:      linear-gradient(180deg, #2E0C4E 0%, #100422 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+  color: var(--foreground);
+  background: linear-gradient(180deg, #2e0c4e 0%, #100422 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--apron-gold);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+
+  [data-focus-ring-hidden="true"] :focus-visible,
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-spin {
+    animation: none !important;
+  }
+
+  .animate-fade-in {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/10 border border-white/20 backdrop-blur-md rounded-2xl shadow-glass;
+  }
+
+  .glass-hover {
+    @apply transition hover:bg-white/15 active:scale-[0.99];
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #ffc400 0%, #fff3a8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-apron-gold text-apron-bg-dark font-semibold shadow-gold transition hover:bg-apron-goldDark active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-apron-pink text-white font-semibold transition hover:bg-apron-pinkDark active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-white/30 text-white font-semibold bg-white/5 transition hover:bg-white/10 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed;
+  }
+
+  .input-base {
+    @apply w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-apron-gold focus:ring-1 focus:ring-apron-gold/50;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+}

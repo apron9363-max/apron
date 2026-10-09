@@ -1,0 +1,138 @@
+[debug] [2026-10-07T15:49:59.235Z] ----------------------------------------------------------------------
+[debug] [2026-10-07T15:49:59.252Z] Command:       C:\nvm4w\nodejs\node.exe C:\nvm4w\nodejs\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2026-10-07T15:49:59.252Z] CLI Version:   15.32.1
+[debug] [2026-10-07T15:49:59.253Z] Platform:      win32
+[debug] [2026-10-07T15:49:59.254Z] Node Version:  v22.22.3
+[debug] [2026-10-07T15:49:59.254Z] Detected Agent: unknown
+[debug] [2026-10-07T15:49:59.260Z] Time:          Wed Oct 07 2026 16:49:59 GMT+0100 (West Africa Time)
+[debug] [2026-10-07T15:49:59.261Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-10-07T15:50:05.851Z] Object "" in "firebase.json" has unknown property: {"additionalProperty":"project"}
+[debug] [2026-10-07T15:50:05.861Z] Object "" in "firebase.json" has unknown property: {"additionalProperty":"project"}
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\projects\apron
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] 
+[debug] [2026-10-07T15:51:20.662Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-10-07T15:51:20.663Z] > authorizing via signed-in user (apron9363@gmail.com)
+[debug] [2026-10-07T15:51:20.733Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:20.734Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:20.737Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/apron-c8bd8 [none]
+[debug] [2026-10-07T15:51:21.778Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/apron-c8bd8 200
+[debug] [2026-10-07T15:51:21.778Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/apron-c8bd8 {"projectId":"apron-c8bd8","projectNumber":"829444884967","displayName":"apron","name":"projects/apron-c8bd8","resources":{"hostingSite":"apron-c8bd8"},"state":"ACTIVE","labels":{"firebase":"enabled"},"etag":"1_318770ac-1837-4027-8a26-ae713bb2b286"}
+[info] i  Using project apron-c8bd8 (apron) . 
+[info] 
+=== Firestore Setup
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2026-10-07T15:51:21.934Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:21.934Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:21.937Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/firestore.googleapis.com [none]
+[debug] [2026-10-07T15:51:21.938Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/firestore.googleapis.com  x-goog-user-project=apron-c8bd8
+[debug] [2026-10-07T15:51:23.235Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/firestore.googleapis.com 200
+[debug] [2026-10-07T15:51:23.236Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/firestore.googleapis.com [omitted]
+[info] +  firestore: required API firestore.googleapis.com is enabled 
+[debug] [2026-10-07T15:51:23.247Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:23.248Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:23.248Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/apron-c8bd8/databases [none]
+[debug] [2026-10-07T15:51:24.653Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/apron-c8bd8/databases 200
+[debug] [2026-10-07T15:51:24.653Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/apron-c8bd8/databases {"databases":[{"name":"projects/apron-c8bd8/databases/default","uid":"8a8486d4-4ad5-478f-94aa-63f5c81dbbbf","createTime":"2026-10-07T13:08:49.122909Z","updateTime":"2026-10-07T13:08:49.122909Z","locationId":"africa-south1","type":"FIRESTORE_NATIVE","concurrencyMode":"OPTIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2026-10-07T14:51:24.218067Z","appEngineIntegrationMode":"DISABLED","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"ENTERPRISE","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","firestoreDataAccessMode":"DATA_ACCESS_MODE_ENABLED","mongodbCompatibleDataAccessMode":"DATA_ACCESS_MODE_DISABLED","etag":"ILTZubKhqJcDMOKuwYr9p5cD"}]}
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2026-10-07T15:51:24.657Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:24.657Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:24.658Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/apron-c8bd8/releases pageSize=10&pageToken=
+[debug] [2026-10-07T15:51:26.284Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/apron-c8bd8/releases 200
+[debug] [2026-10-07T15:51:26.284Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/apron-c8bd8/releases {"releases":[{"name":"projects/apron-c8bd8/releases/cloud.firestore/default","rulesetName":"projects/apron-c8bd8/rulesets/ddfc4f51-b7f8-409a-9d95-05be1e2cbfd8","createTime":"2026-10-07T13:09:04.866429Z","updateTime":"2026-10-07T13:09:04.866429Z"}]}
+[debug] [2026-10-07T15:51:26.285Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:26.285Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:26.286Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/apron-c8bd8/rulesets/ddfc4f51-b7f8-409a-9d95-05be1e2cbfd8 [none]
+[debug] [2026-10-07T15:51:26.693Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/apron-c8bd8/rulesets/ddfc4f51-b7f8-409a-9d95-05be1e2cbfd8 200
+[debug] [2026-10-07T15:51:26.694Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/apron-c8bd8/rulesets/ddfc4f51-b7f8-409a-9d95-05be1e2cbfd8 [omitted]
+[info] i  Downloaded the existing Firestore Security Rules from the Firebase console 
+[info] i  Skipping write of firestore.rules 
+[info] 
+[info] Firestore indexes allow you to perform complex queries while
+[info] maintaining performance that scales with the size of the result
+[info] set. You can keep index definitions in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2026-10-07T15:51:45.317Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:45.318Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:45.318Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:45.318Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:45.319Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/apron-c8bd8/databases/default/collectionGroups/-/indexes [none]
+[debug] [2026-10-07T15:51:45.332Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/apron-c8bd8/databases/default/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* [none]
+[debug] [2026-10-07T15:51:46.086Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/apron-c8bd8/databases/default/collectionGroups/-/indexes 200
+[debug] [2026-10-07T15:51:46.086Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/apron-c8bd8/databases/default/collectionGroups/-/indexes {}
+[debug] [2026-10-07T15:51:46.455Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/apron-c8bd8/databases/default/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* 200
+[debug] [2026-10-07T15:51:46.455Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/apron-c8bd8/databases/default/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* {"fields":[{"name":"projects/apron-c8bd8/databases/default/collectionGroups/__default__/fields/*","indexConfig":{}}]}
+[info] i  Downloaded the existing Firestore indexes from the Firebase console 
+[info] +  Wrote firestore.indexes.json 
+[info] 
+=== Functions Setup
+[debug] [2026-10-07T15:51:46.473Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-10-07T15:51:46.474Z] > authorizing via signed-in user (apron9363@gmail.com)
+[debug] [2026-10-07T15:51:46.478Z] [iam] checking project apron-c8bd8 for permissions ["firebase.projects.get"]
+[debug] [2026-10-07T15:51:46.479Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:46.479Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:46.479Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/apron-c8bd8:testIamPermissions [none]
+[debug] [2026-10-07T15:51:46.479Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/apron-c8bd8:testIamPermissions  x-goog-user-project=apron-c8bd8
+[debug] [2026-10-07T15:51:46.480Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/apron-c8bd8:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2026-10-07T15:51:48.689Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/apron-c8bd8:testIamPermissions 200
+[debug] [2026-10-07T15:51:48.689Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/apron-c8bd8:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2026-10-07T15:51:48.691Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:48.691Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:48.692Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:48.692Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:48.693Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/cloudfunctions.googleapis.com [none]
+[debug] [2026-10-07T15:51:48.693Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/cloudfunctions.googleapis.com  x-goog-user-project=apron-c8bd8
+[debug] [2026-10-07T15:51:48.697Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/runtimeconfig.googleapis.com [none]
+[debug] [2026-10-07T15:51:48.697Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/runtimeconfig.googleapis.com  x-goog-user-project=apron-c8bd8
+[debug] [2026-10-07T15:51:49.995Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/runtimeconfig.googleapis.com 200
+[debug] [2026-10-07T15:51:49.996Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2026-10-07T15:51:50.006Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/cloudfunctions.googleapis.com 200
+[debug] [2026-10-07T15:51:50.007Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2026-10-07T15:51:50.008Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:50.008Z] Checked if tokens are valid: true, expires at: 1791391169015
+[debug] [2026-10-07T15:51:50.008Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/cloudfunctions.googleapis.com:enable [none]
+[debug] [2026-10-07T15:51:50.009Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/cloudfunctions.googleapis.com:enable  x-goog-user-project=apron-c8bd8
+[debug] [2026-10-07T15:51:51.271Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/cloudfunctions.googleapis.com:enable 200
+[debug] [2026-10-07T15:51:51.272Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/apron-c8bd8/services/cloudfunctions.googleapis.com:enable [omitted]
+[info] Let's create a new codebase for your functions.
+[info] A directory corresponding to the codebase will be created in your project
+[info] with sample code pre-configured.
+
+[info] See https://firebase.google.com/docs/functions/organize-functions for
+[info] more information on organizing your functions using codebases.
+
+[info] Functions can be deployed with firebase deploy.
+
+[info] +  Wrote functions/.eslintrc.js 
+[info] +  Wrote functions/tsconfig.dev.json 
+[info] +  Wrote functions/package.json 
+[info] +  Wrote functions/tsconfig.json 
+[info] +  Wrote functions/src/index.ts 
+[info] +  Wrote functions/.gitignore 
+[info] 
+=== Emulators Setup
