@@ -416,34 +416,39 @@ export async function syncGoogleUserDocAction(input: {
     email: z.string().email(),
   });
   const parsed = schema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "Invalid fields" };
+  if (!parsed.success) throw new Error("Invalid fields");
   const { uid, name, email } = parsed.data;
-  const existing = await getUser(uid);
-  if (existing) return { ok: true, existed: true, referralCode: existing.referralCode };
-  const referral = await generateUniqueReferralCode();
-  await createUserDoc(uid, {
-    name: name?.trim() || email.split("@")[0],
-    email,
-    phone: "",
-    role: "user",
-    plan: PLAN_IDS.starter,
-    planExpiresAt: null,
-    balance: 0,
-    taskBalance: 0,
-    apnRate: 0.1,
-    referralCode: referral,
-    referredBy: null,
-    referralPaidOut: false,
-    bankDetails: null,
-    status: "active",
-    emailVerified: true,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-  });
   try {
-    await applyReferralBonusForVerifiedUser(uid);
-  } catch {
-    // non-fatal: bonus can be applied manually later
+    const existing = await getUser(uid);
+    if (existing) return { ok: true, existed: true, referralCode: existing.referralCode };
+    const referral = await generateUniqueReferralCode();
+    await createUserDoc(uid, {
+      name: name?.trim() || email.split("@")[0],
+      email,
+      phone: "",
+      role: "user",
+      plan: PLAN_IDS.starter,
+      planExpiresAt: null,
+      balance: 0,
+      taskBalance: 0,
+      apnRate: 0.1,
+      referralCode: referral,
+      referredBy: null,
+      referralPaidOut: false,
+      bankDetails: null,
+      status: "active",
+      emailVerified: true,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    });
+    try {
+      await applyReferralBonusForVerifiedUser(uid);
+    } catch {
+      // non-fatal: bonus can be applied manually later
+    }
+    return { ok: true, referralCode: referral };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "Google sync failed";
+    throw new Error(msg);
   }
-  return { ok: true, referralCode: referral };
 }

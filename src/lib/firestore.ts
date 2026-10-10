@@ -31,6 +31,18 @@ function col(db: Firestore, name: string) {
   return db.collection(name);
 }
 
+type WithCodeErr = Error & { code?: number | string };
+const GRPC_ERROR_MSG = /^\d+\s+[A-Z_][A-Z0-9_]*:/;
+
+function isFirestoreError(e: unknown): boolean {
+  if (!(e instanceof Error)) return false;
+  const w = e as WithCodeErr;
+  if (typeof w.code === "number" && w.code >= 1 && w.code <= 16) return true;
+  if (typeof w.code === "string" && /^\d+$/.test(w.code)) return true;
+  if (GRPC_ERROR_MSG.test(e.message)) return true;
+  return false;
+}
+
 function fromSnap<T>(snap: {
   exists: boolean;
   data: () => DocumentData | undefined;
@@ -47,20 +59,30 @@ function withId<T extends { id?: string }>(data: T, id: string) {
 
 export async function getUser(uid: string): Promise<UserDoc | null> {
   const db = getAdminDb();
-  const snap = await col(db, COLLECTIONS.users).doc(uid).get();
-  return fromSnap<UserDoc>(snap);
+  try {
+    const snap = await col(db, COLLECTIONS.users).doc(uid).get();
+    return fromSnap<UserDoc>(snap);
+  } catch (e) {
+    if (!isFirestoreError(e)) throw e;
+    return null;
+  }
 }
 
 export async function getUserByReferralCode(
   code: string,
 ): Promise<UserDoc | null> {
   const db = getAdminDb();
-  const snap = await col(db, COLLECTIONS.users)
-    .where("referralCode", "==", code.toUpperCase())
-    .limit(1)
-    .get();
-  if (snap.empty) return null;
-  return fromSnap<UserDoc>(snap.docs[0]);
+  try {
+    const snap = await col(db, COLLECTIONS.users)
+      .where("referralCode", "==", code.toUpperCase())
+      .limit(1)
+      .get();
+    if (snap.empty) return null;
+    return fromSnap<UserDoc>(snap.docs[0]);
+  } catch (e) {
+    if (!isFirestoreError(e)) throw e;
+    return null;
+  }
 }
 
 export async function listUsers(opts?: {
@@ -281,9 +303,33 @@ export async function listEarningsByUser(
 
 export async function getSettings(): Promise<SettingsDoc> {
   const db = getAdminDb();
-  const snap = await col(db, COLLECTIONS.settings).doc("platform").get();
-  if (!snap.exists) {
-    const defaults: SettingsDoc = {
+  try {
+    const snap = await col(db, COLLECTIONS.settings).doc("platform").get();
+    if (!snap.exists) {
+      const defaults: SettingsDoc = {
+        id: "platform",
+        referralBonus: 50,
+        withdrawalFeePct: 0.05,
+        minWithdrawal: 1000,
+        hourlyInactivityDays: 30,
+        globalAccrualCapAPN: 100_000,
+      };
+      await col(db, COLLECTIONS.settings).doc("platform").set(defaults);
+      return defaults;
+    }
+    const raw = snap.data() as Partial<SettingsDoc>;
+    const merged: SettingsDoc = {
+      id: "platform",
+      referralBonus: raw.referralBonus ?? 50,
+      withdrawalFeePct: raw.withdrawalFeePct ?? 0.05,
+      minWithdrawal: raw.minWithdrawal ?? 1000,
+      hourlyInactivityDays: raw.hourlyInactivityDays ?? 30,
+      globalAccrualCapAPN: raw.globalAccrualCapAPN ?? 100_000,
+    };
+    return merged;
+  } catch (e) {
+    if (!isFirestoreError(e)) throw e;
+    return {
       id: "platform",
       referralBonus: 50,
       withdrawalFeePct: 0.05,
@@ -291,19 +337,7 @@ export async function getSettings(): Promise<SettingsDoc> {
       hourlyInactivityDays: 30,
       globalAccrualCapAPN: 100_000,
     };
-    await col(db, COLLECTIONS.settings).doc("platform").set(defaults);
-    return defaults;
   }
-  const raw = snap.data() as Partial<SettingsDoc>;
-  const merged: SettingsDoc = {
-    id: "platform",
-    referralBonus: raw.referralBonus ?? 50,
-    withdrawalFeePct: raw.withdrawalFeePct ?? 0.05,
-    minWithdrawal: raw.minWithdrawal ?? 1000,
-    hourlyInactivityDays: raw.hourlyInactivityDays ?? 30,
-    globalAccrualCapAPN: raw.globalAccrualCapAPN ?? 100_000,
-  };
-  return merged;
 }
 
 export async function updateSettings(patch: Partial<SettingsDoc>) {
