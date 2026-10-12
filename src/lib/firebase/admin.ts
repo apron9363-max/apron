@@ -43,7 +43,7 @@ export function getAdminAuth(): AdminAuth {
 let adminDbCached: AdminFirestore | null = null;
 export function getAdminDb(): AdminFirestore {
   if (adminDbCached) return adminDbCached;
-  adminDbCached = adminGetFirestore(getAdminApp());
+  adminDbCached = adminGetFirestore(getAdminApp(), "default");
   return adminDbCached;
 }
 

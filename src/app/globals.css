@@ -126,7 +126,7 @@ body {
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-apron-gold text-apron-bg-dark font-semibold shadow-gold transition hover:bg-apron-goldDark active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-apron-gold text-primary-950 font-semibold shadow-gold transition hover:bg-apron-goldDark active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed;
   }
 
   .btn-secondary {

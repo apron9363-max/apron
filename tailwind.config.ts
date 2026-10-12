@@ -132,6 +132,14 @@ const config: Config = {
           "0%": { backgroundPosition: "-400px 0" },
           "100%": { backgroundPosition: "400px 0" },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-12px)" },
+        },
+        "float-slow": {
+          "0%, 100%": { transform: "translateY(0px) rotate(0deg)" },
+          "50%": { transform: "translateY(-18px) rotate(6deg)" },
+        },
       },
       animation: {
         "fade-in": "fade-in 0.25s ease-out both",
@@ -140,6 +148,8 @@ const config: Config = {
         "slide-in-up": "slide-in-up 0.22s ease-out both",
         "slide-in-down": "slide-in-down 0.22s ease-out both",
         shimmer: "shimmer 2s linear infinite",
+        float: "float 4s ease-in-out infinite",
+        "float-slow": "float-slow 6s ease-in-out infinite",
       },
     },
   },
