@@ -34,13 +34,13 @@ export default async function ReferralsPage() {
         <StatCard
           label="Referrals earned"
           value={formatAPN(totalRefBonus)}
-          icon={Gift}
+          icon={<Gift size={18} />}
           iconColor="text-apron-gold"
         />
         <StatCard
           label="My code"
           value={user.referralCode}
-          icon={Coins}
+          icon={<Coins size={18} />}
           valueClassName="font-mono text-apron-gold text-base"
         />
       </div>

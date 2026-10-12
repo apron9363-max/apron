@@ -80,7 +80,7 @@ export async function verifySessionCookie(
         };
       }
       return {
-        uid: doc.uid,
+        uid: decoded.uid,
         email: doc.email,
         role: doc.role,
         status: doc.status,

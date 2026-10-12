@@ -216,14 +216,14 @@ export default function HistoryListClient({
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatCard label="Total rows" value={stats.total} icon={Coins} />
-        <StatCard label="Earnings" value={stats.earningsCount} iconColor="text-apron-gold" icon={Gift} />
-        <StatCard label="Withdrawals" value={stats.withdrawalsCount} iconColor="text-apron-pink" icon={Banknote} />
+        <StatCard label="Total rows" value={stats.total} icon={<Coins size={18} />} />
+        <StatCard label="Earnings" value={stats.earningsCount} iconColor="text-apron-gold" icon={<Gift size={18} />} />
+        <StatCard label="Withdrawals" value={stats.withdrawalsCount} iconColor="text-apron-pink" icon={<Banknote size={18} />} />
         <StatCard
           label="Net (APN - NGN)"
           value={`${formatAPN(stats.earnedSum)} / ₦${stats.wdSum.toLocaleString()}`}
           iconColor="text-white/80"
-          icon={Wallet}
+          icon={<Wallet size={18} />}
         />
       </div>
 

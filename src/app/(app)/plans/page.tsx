@@ -32,7 +32,7 @@ export default async function PlansPage() {
         <StatCard
           label="Your current plan"
           value={<span className="capitalize">{user.plan}</span>}
-          icon={Crown}
+          icon={<Crown size={18} />}
           sublabel={
             user.planExpiresAt && user.planExpiresAt > Date.now()
               ? `Expires ${new Date(user.planExpiresAt).toLocaleDateString()}`

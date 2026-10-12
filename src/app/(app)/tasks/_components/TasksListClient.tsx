@@ -172,13 +172,13 @@ export default function TasksListClient({ initialTasks }: { initialTasks: Enrich
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatCard label="Total" value={stats.total} icon={ClipboardList} />
-        <StatCard label="Available" value={stats.available} icon={Play} iconColor="text-apron-gold" />
-        <StatCard label="Completed" value={stats.completed} icon={CheckCircle2} iconColor="text-emerald-300" />
+        <StatCard label="Total" value={stats.total} icon={<ClipboardList size={18} />} />
+        <StatCard label="Available" value={stats.available} icon={<Play size={18} />} iconColor="text-apron-gold" />
+        <StatCard label="Completed" value={stats.completed} icon={<CheckCircle2 size={18} />} iconColor="text-emerald-300" />
         <StatCard
           label="Reward pool"
           value={formatAPN(stats.rewardPool)}
-          icon={Coins}
+          icon={<Coins size={18} />}
           iconColor="text-apron-pink"
         />
       </div>

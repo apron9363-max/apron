@@ -236,13 +236,13 @@ export default function WalletPageClient() {
         <StatCard
           label="Task Balance"
           value={formatAPN(user.taskBalance)}
-          icon={Coins}
+          icon={<Coins size={18} />}
           iconColor="text-apron-pink"
         />
         <StatCard
           label="Pending withdrawal"
           value={pendingWd.toString()}
-          icon={Banknote}
+          icon={<Banknote size={18} />}
         />
       </div>
 

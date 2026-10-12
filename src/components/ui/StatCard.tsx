@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { type LucideIcon, TrendingUp, TrendingDown, Minus, HelpCircle } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, HelpCircle } from "lucide-react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -52,7 +52,7 @@ interface TrendProps {
 interface StatCardProps {
   label: string;
   value: React.ReactNode;
-  icon?: LucideIcon;
+  icon?: React.ReactNode;
   iconColor?: string;
   sublabel?: React.ReactNode;
   valueClassName?: string;
@@ -66,7 +66,7 @@ interface StatCardProps {
 export function StatCard({
   label,
   value,
-  icon: Icon,
+  icon,
   iconColor = "text-apron-gold",
   sublabel,
   valueClassName,
@@ -193,14 +193,14 @@ export function StatCard({
               </div>
             ) : null}
           </div>
-          {Icon ? (
+          {icon ? (
             <div
               className={cn(
                 "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 border border-white/20",
                 iconColor,
               )}
             >
-              <Icon size={18} />
+              {icon}
             </div>
           ) : null}
         </div>

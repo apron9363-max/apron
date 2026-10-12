@@ -201,12 +201,12 @@ export default function QuizFlowRenderer({ quizId, onExit }: { quizId: string; o
         <StatCard
           label="Question"
           value={`${Math.min(step + 1, total)} / ${total}`}
-          icon={HelpCircle}
+          icon={<HelpCircle size={18} />}
         />
         <StatCard
           label="Reward"
           value={formatAPN(initData.task.reward)}
-          icon={Trophy}
+          icon={<Trophy size={18} />}
           iconColor="text-apron-gold"
         />
       </div>

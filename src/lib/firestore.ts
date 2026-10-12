@@ -50,14 +50,17 @@ function fromSnap<T>(snap: {
 }): T | null {
   if (!snap.exists) return null;
   const d = snap.data()!;
-  return { ...(d as unknown as T), id: snap.id } as T;
+  // `uid` is the document id for UserDoc; ensure it is always populated
+  // even if the stored document omitted the field (e.g. legacy docs).
+  return { ...(d as unknown as T), id: snap.id, uid: snap.id } as T;
 }
 
 function withId<T extends { id?: string }>(data: T, id: string) {
-  return { ...data, id } as T & { id: string };
+  return { ...data, id, uid: id } as T & { id: string };
 }
 
 export async function getUser(uid: string): Promise<UserDoc | null> {
+  if (typeof uid !== "string" || uid.length === 0) return null;
   const db = getAdminDb();
   try {
     const snap = await col(db, COLLECTIONS.users).doc(uid).get();
@@ -111,7 +114,7 @@ export async function createUserDoc(
 ): Promise<UserDoc> {
   const db = getAdminDb();
   const ref = col(db, COLLECTIONS.users).doc(uid);
-  await ref.set(data);
+  await ref.set({ ...data, uid });
   return { ...data, uid, id: uid } as UserDoc;
 }
 
@@ -151,6 +154,7 @@ export async function listTasks(onlyActive = true): Promise<TaskDoc[]> {
 }
 
 export async function getTask(taskId: string): Promise<TaskDoc | null> {
+  if (typeof taskId !== "string" || taskId.length === 0) return null;
   const db = getAdminDb();
   const snap = await col(db, COLLECTIONS.tasks).doc(taskId).get();
   return fromSnap<TaskDoc>(snap);
@@ -215,6 +219,7 @@ export async function createWithdrawal(
 }
 
 export async function getWithdrawal(wdId: string) {
+  if (typeof wdId !== "string" || wdId.length === 0) return null;
   const db = getAdminDb();
   const snap = await col(db, COLLECTIONS.withdrawals).doc(wdId).get();
   return fromSnap<WithdrawalDoc>(snap);
@@ -267,6 +272,7 @@ export async function listPlans(): Promise<PlanDoc[]> {
 }
 
 export async function getPlan(id: string): Promise<PlanDoc | null> {
+  if (typeof id !== "string" || id.length === 0) return null;
   const db = getAdminDb();
   const snap = await col(db, COLLECTIONS.plans).doc(id).get();
   return fromSnap<PlanDoc>(snap);
@@ -1115,6 +1121,7 @@ export async function listAdminOpsTasks(
 }
 
 export async function getAdminOpsTask(id: string): Promise<AdminOpsTask | null> {
+  if (typeof id !== "string" || id.length === 0) return null;
   const db = getAdminDb();
   const snap = await col(db, COLLECTIONS.admin_ops_tasks).doc(id).get();
   return fromSnap<AdminOpsTask>(snap);

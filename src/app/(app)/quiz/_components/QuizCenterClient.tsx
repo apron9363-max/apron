@@ -47,10 +47,10 @@ export default function QuizCenterClient({ initialQuizzes }: { initialQuizzes: Q
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatCard label="Quizzes" value={initialQuizzes.length} icon={HelpCircle} />
-        <StatCard label="Available" value={available} icon={Play} iconColor="text-apron-gold" />
-        <StatCard label="Completed (24h)" value={completed} icon={CheckCircle2} iconColor="text-emerald-300" />
-        <StatCard label="Reward pool" value={formatAPN(totalReward)} icon={Trophy} iconColor="text-apron-pink" />
+        <StatCard label="Quizzes" value={initialQuizzes.length} icon={<HelpCircle size={18} />} />
+        <StatCard label="Available" value={available} icon={<Play size={18} />} iconColor="text-apron-gold" />
+        <StatCard label="Completed (24h)" value={completed} icon={<CheckCircle2 size={18} />} iconColor="text-emerald-300" />
+        <StatCard label="Reward pool" value={formatAPN(totalReward)} icon={<Trophy size={18} />} iconColor="text-apron-pink" />
       </div>
 
       {initialQuizzes.length === 0 ? (

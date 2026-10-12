@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Coins,
   Wallet,
@@ -37,7 +39,7 @@ export function BalanceCardsSection({
         <StatCard
           label="Available Balance"
           value={formatAPN(balance)}
-          icon={Wallet}
+          icon={<Wallet size={18} />}
           sublabel={`≈ ${formatNaira(Math.max(0, balance))}`}
           valueClassName="text-gradient-gold"
           trend={availableTrend}
@@ -48,7 +50,7 @@ export function BalanceCardsSection({
         <StatCard
           label="Task Balance"
           value={formatAPN(taskBalance)}
-          icon={Coins}
+          icon={<Coins size={18} />}
           iconColor="text-apron-pink"
           sublabel="Available for tasks"
           tooltip="Reserved for task submissions."
@@ -56,14 +58,14 @@ export function BalanceCardsSection({
         <StatCard
           label="Pending (Unpaid)"
           value={formatAPN(pendingBalanceSum)}
-          icon={Clock}
+          icon={<Clock size={18} />}
           iconColor="text-white/70"
           tooltip="Submitted earnings pending admin approval."
         />
         <StatCard
           label="30-Day Earned"
           value={formatAPN(historicalSum30d)}
-          icon={HistoryIcon}
+          icon={<HistoryIcon size={18} />}
           iconColor="text-apron-gold"
           tooltip="Total APN earned in the last 30 days."
           trend={historicalTrend}

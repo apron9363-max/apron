@@ -208,25 +208,25 @@ export default function AdminOverviewClient() {
             <StatCard
               label="Total users"
               value={overview?.totalUsers ?? 0}
-              icon={Users}
+              icon={<Users size={18} />}
               iconColor="text-apron-gold"
             />
             <StatCard
               label="Active users (7d)"
               value={overview?.activeUsers7d ?? 0}
-              icon={UserCheck}
+              icon={<UserCheck size={18} />}
               iconColor="text-green-300"
             />
             <StatCard
               label="Pending withdrawals"
               value={`${overview?.pendingWithdrawals ?? 0} · ${formatNaira(overview?.pendingWithdrawalsAmount ?? 0)}`}
-              icon={Wallet}
+              icon={<Wallet size={18} />}
               iconColor="text-apron-pink"
             />
             <StatCard
               label="Revenue estimate"
               value={formatNaira(overview?.revenueEstimate ?? 0)}
-              icon={TrendingUp}
+              icon={<TrendingUp size={18} />}
               iconColor="text-apron-gold"
             />
           </div>
