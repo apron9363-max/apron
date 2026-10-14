@@ -18,6 +18,17 @@ interface DashboardHeroProps {
 
 const COOLDOWN_MS = 60 * 60 * 1000;
 
+// Convert a possibly-serialized Firestore Timestamp or number into ms.
+function toTimestampMs(value: unknown): number | null {
+  if (typeof value === "number") return value;
+  if (value && typeof value === "object") {
+    const v = value as { seconds?: number; nanoseconds?: number; _seconds?: number };
+    const sec = v.seconds ?? v._seconds;
+    if (typeof sec === "number") return sec * 1000;
+  }
+  return null;
+}
+
 function formatRemaining(ms: number): string {
   if (ms <= 0) return "0m 0s";
   const totalSec = Math.ceil(ms / 1000);
@@ -32,8 +43,8 @@ export function DashboardHero({ user, apnRate, planDoc }: DashboardHeroProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [isPending, startTx] = useTransition();
-  const [lastClaimAt, setLastClaimAt] = useState<number | null>(
-    typeof user.lastHourlyClaimAt === "number" ? user.lastHourlyClaimAt : null,
+  const [lastClaimAt, setLastClaimAt] = useState<number | null>(() =>
+    toTimestampMs(user.lastHourlyClaimAt),
   );
   const [now, setNow] = useState<number>(Date.now());
 
@@ -47,13 +58,14 @@ export function DashboardHero({ user, apnRate, planDoc }: DashboardHeroProps) {
   const onCooldown = remainingMs > 0;
 
   const handleClaim = useCallback(() => {
+    console.log("[Claim] button clicked. onCooldown:", onCooldown, "isPending:", isPending);
     if (onCooldown || isPending) return;
     startTx(async () => {
       try {
         const res = await claimHourlyAccrualAction();
+        console.log("[Claim] server response:", res);
 
         if (res?.ok) {
-          // Sync cooldown from server, refresh balance cards, and confirm success.
           setLastClaimAt(Date.now());
           toast({
             variant: "success",
@@ -65,7 +77,6 @@ export function DashboardHero({ user, apnRate, planDoc }: DashboardHeroProps) {
         }
 
         if (res?.cooldown && typeof res.waitMs === "number") {
-          // Server-enforced cooldown — sync the client timer to it.
           setLastClaimAt(Date.now() + res.waitMs - COOLDOWN_MS);
           toast({
             variant: "warning",
@@ -76,7 +87,6 @@ export function DashboardHero({ user, apnRate, planDoc }: DashboardHeroProps) {
         }
 
         if (res?.reason) {
-          // "Nothing to claim" — server still sets lastHourlyClaimAt, so sync it.
           setLastClaimAt(Date.now());
           toast({
             variant: "info",
@@ -86,14 +96,13 @@ export function DashboardHero({ user, apnRate, planDoc }: DashboardHeroProps) {
           return;
         }
 
-        // Generic failure.
         toast({
           variant: "error",
           title: "Claim failed",
           description: res?.error ?? "Unable to process your claim. Please try again.",
         });
       } catch (err) {
-        // Unexpected errors must not swallow silently.
+        console.error("[Claim] unexpected error:", err);
         toast({
           variant: "error",
           title: "Claim failed",
