@@ -23,6 +23,8 @@ function RegisterContent() {
   const router = useRouter();
   const params = useSearchParams();
   const refCode = params.get("ref") ?? "";
+  const prefillName = params.get("name") ?? "";
+  const prefillEmail = params.get("email") ?? "";
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -35,8 +37,8 @@ function RegisterContent() {
   } = useForm<FormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      name: prefillName,
+      email: prefillEmail,
       phone: "",
       password: "",
       confirmPassword: "",
@@ -46,7 +48,9 @@ function RegisterContent() {
 
   useEffect(() => {
     if (refCode) setValue("referralCode", refCode);
-  }, [refCode, setValue]);
+    if (prefillName) setValue("name", prefillName);
+    if (prefillEmail) setValue("email", prefillEmail);
+  }, [refCode, prefillName, prefillEmail, setValue]);
 
   const onSubmit = useCallback(
     async (v: FormValues) => {

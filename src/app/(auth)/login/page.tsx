@@ -14,6 +14,7 @@ import {
   createSessionFromIdToken,
   signInWithEmailAndPassword,
   signInWithGooglePopup,
+  signOutClient,
 } from "@/hooks/useFirebaseAuth";
 import {
   getCurrentSession,
@@ -78,12 +79,23 @@ function LoginContent() {
     setError(null);
     try {
       const cred = await signInWithGooglePopup();
-      const idToken = await cred.user.getIdToken(true);
-      await syncGoogleUserDocAction({
+      const syncRes = await syncGoogleUserDocAction({
         uid: cred.user.uid,
         name: cred.user.displayName ?? undefined,
         email: cred.user.email ?? "",
       });
+      // Only pre-registered users may complete Google sign-in.
+      // Unregistered Google accounts are routed to the registration page.
+      if (!syncRes.existed) {
+        await signOutClient();
+        const params = new URLSearchParams({
+          name: cred.user.displayName ?? "",
+          email: cred.user.email ?? "",
+        });
+        router.push(`/register?${params.toString()}`);
+        return;
+      }
+      const idToken = await cred.user.getIdToken(true);
       await createSessionFromIdToken(idToken);
       const sess = await getCurrentSession();
       if (sess?.status === "banned") {

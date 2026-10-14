@@ -434,33 +434,20 @@ export async function syncGoogleUserDocAction(input: {
   const { uid, name, email } = parsed.data;
   try {
     const existing = await getUser(uid);
-    if (existing) return { ok: true, existed: true, referralCode: existing.referralCode };
-    const referral = await generateUniqueReferralCode();
-    await createUserDoc(uid, {
-      name: name?.trim() || email.split("@")[0],
-      email,
-      phone: "",
-      role: "user",
-      plan: PLAN_IDS.starter,
-      planExpiresAt: null,
-      balance: 0,
-      taskBalance: 0,
-      apnRate: 0.1,
-      referralCode: referral,
-      referredBy: null,
-      referralPaidOut: false,
-      bankDetails: null,
-      status: "active",
-      emailVerified: true,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    });
-    try {
-      await applyReferralBonusForVerifiedUser(uid);
-    } catch {
-      // non-fatal: bonus can be applied manually later
+    // Only pre-registered users may sign in with Google. If no user doc
+    // exists, report non-existence so the client can route to registration
+    // instead of creating an account implicitly.
+    if (!existing) {
+      return { ok: true, existed: false };
     }
-    return { ok: true, referralCode: referral };
+    // Keep existing profile fields in sync with the Google account.
+    const patch: Partial<UserDoc> = {};
+    if (name && existing.name !== name.trim()) patch.name = name.trim();
+    if (email && existing.email !== email) patch.email = email;
+    if (Object.keys(patch).length > 0) {
+      await updateUser(uid, patch);
+    }
+    return { ok: true, existed: true, referralCode: existing.referralCode };
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Google sync failed";
     throw new Error(msg);
