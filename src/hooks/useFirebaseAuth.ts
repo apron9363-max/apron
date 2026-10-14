@@ -121,6 +121,11 @@ export async function signInWithGooglePopup() {
     if (code === "auth/invalid-api-key" || /api.*key/i.test(msg)) {
       throw new Error("Firebase configuration is invalid. Please contact support.");
     }
+    if (code === "auth/unauthorized-domain") {
+      throw new Error(
+        "This site domain is not authorized for Google sign-in. The site owner must add this domain in Firebase Console → Authentication → Settings → Authorized domains.",
+      );
+    }
     throw e;
   }
 }

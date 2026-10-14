@@ -2,6 +2,7 @@
 
 import * as z from "zod";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import {
   createUserDoc,
   getUser,
@@ -243,8 +244,21 @@ export async function sendVerificationEmailAction(input: {
   }
   const { idToken } = parsed.data;
   const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
-  const continueUrl =
-    (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000") + "/verify";
+  // Prefer the configured production site URL; fall back to the request's
+  // forwarded host so preview/staging deployments still get correct links.
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  let origin: string;
+  if (siteUrl) {
+    origin = siteUrl.replace(/\/$/, "");
+  } else {
+    const hdr = headers();
+    const fwdHost = hdr.get("x-forwarded-host");
+    const fwdProto = hdr.get("x-forwarded-proto");
+    const host = fwdHost || hdr.get("host") || "localhost:3000";
+    const proto = fwdProto || (host.startsWith("localhost") ? "http" : "https");
+    origin = `${proto}://${host}`;
+  }
+  const continueUrl = `${origin}/verify`;
   const auth = getAdminAuth();
   let emailToSend = "";
   let directLink: string | undefined;
