@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="apron-gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="100%" stop-color="#FFC400"/>
+    </linearGradient>
+  </defs>
+  <!-- Brand background: rounded dark-purple tile -->
+  <rect width="48" height="48" rx="10" fill="#2E0C4E"/>
+  <!-- Apron mark (gold) -->
+  <g fill="url(#apron-gold)" stroke="#E0AE00" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M16 6h16v4a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6V6z"/>
+    <path d="M12 12h24v6c0 4-2 10-3 14l-3 12H15l-3-12C11 28 9 22 9 18v-6h3z"/>
+  </g>
+</svg>
