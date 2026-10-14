@@ -1,12 +1,12 @@
 "use client";
 
 import { useTransition, useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { Sparkles, Clock } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { formatAPN } from "@/lib/utils";
-import {
-  claimHourlyAccrualAction,
-} from "@/server/actions/userActions";
+import { claimHourlyAccrualAction } from "@/server/actions/userActions";
+import { useToast } from "@/components/ui/Toast";
 import type { UserDoc, PlanDoc } from "@/types";
 import { HeroRateRefresh } from "./ReferralTools";
 
@@ -29,8 +29,9 @@ function formatRemaining(ms: number): string {
 }
 
 export function DashboardHero({ user, apnRate, planDoc }: DashboardHeroProps) {
-  const [, startTx] = useTransition();
-  const [claiming, setClaiming] = useState(false);
+  const router = useRouter();
+  const { toast } = useToast();
+  const [isPending, startTx] = useTransition();
   const [lastClaimAt, setLastClaimAt] = useState<number | null>(
     typeof user.lastHourlyClaimAt === "number" ? user.lastHourlyClaimAt : null,
   );
@@ -46,22 +47,62 @@ export function DashboardHero({ user, apnRate, planDoc }: DashboardHeroProps) {
   const onCooldown = remainingMs > 0;
 
   const handleClaim = useCallback(() => {
-    if (onCooldown || claiming) return;
-    setClaiming(true);
+    if (onCooldown || isPending) return;
     startTx(async () => {
       try {
         const res = await claimHourlyAccrualAction();
+
         if (res?.ok) {
+          // Sync cooldown from server, refresh balance cards, and confirm success.
           setLastClaimAt(Date.now());
-        } else if (res?.cooldown && typeof res.waitMs === "number") {
-          // Sync client cooldown with the server-enforced window.
-          setLastClaimAt(Date.now() + res.waitMs - COOLDOWN_MS);
+          toast({
+            variant: "success",
+            title: "Hourly coins claimed!",
+            description: `${formatAPN(res.amount ?? 0)} added to your balance.`,
+          });
+          router.refresh();
+          return;
         }
-      } finally {
-        setClaiming(false);
+
+        if (res?.cooldown && typeof res.waitMs === "number") {
+          // Server-enforced cooldown — sync the client timer to it.
+          setLastClaimAt(Date.now() + res.waitMs - COOLDOWN_MS);
+          toast({
+            variant: "warning",
+            title: "Already claimed",
+            description: `Next claim available in ${formatRemaining(res.waitMs)}.`,
+          });
+          return;
+        }
+
+        if (res?.reason) {
+          // "Nothing to claim" — server still sets lastHourlyClaimAt, so sync it.
+          setLastClaimAt(Date.now());
+          toast({
+            variant: "info",
+            title: "Nothing to claim yet",
+            description: res.error ?? "Accrual is building. Check back soon.",
+          });
+          return;
+        }
+
+        // Generic failure.
+        toast({
+          variant: "error",
+          title: "Claim failed",
+          description: res?.error ?? "Unable to process your claim. Please try again.",
+        });
+      } catch (err) {
+        // Unexpected errors must not swallow silently.
+        toast({
+          variant: "error",
+          title: "Claim failed",
+          description:
+            err instanceof Error ? err.message : "An unexpected error occurred.",
+        });
       }
     });
-  }, [onCooldown, claiming]);
+  }, [onCooldown, isPending, toast, router]);
 
   return (
     <section className="glass p-5 md:p-6 lg:p-7">
@@ -81,11 +122,12 @@ export function DashboardHero({ user, apnRate, planDoc }: DashboardHeroProps) {
             variant="secondary"
             size="sm"
             onClick={handleClaim}
-            disabled={claiming || onCooldown}
-            aria-disabled={claiming || onCooldown}
+            disabled={isPending || onCooldown}
+            aria-disabled={isPending || onCooldown}
+            aria-busy={isPending}
           >
             <Sparkles size={14} />
-            {claiming ? "Claiming…" : onCooldown ? "Claimed" : "Claim"}
+            {isPending ? "Claiming…" : onCooldown ? "Claimed" : "Claim"}
           </Button>
           {onCooldown ? (
             <span className="text-[11px] text-white/50 flex items-center gap-1">
