@@ -30,6 +30,7 @@ function resolveHmacSecret(): string {
     process.env.HMAC_SECRET,
     process.env.COOKIE_SECRET,
     process.env.FIREBASE_SECRET_COOKIE_SECRET,
+    process.env.FIREBASE_ADMIN_PRIVATE_KEY,
   ];
   const found = candidates.find((v) => typeof v === "string" && v.length > 0);
   if (!found) {
