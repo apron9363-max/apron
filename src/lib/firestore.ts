@@ -134,8 +134,6 @@ export async function updateUserBalanceTx(
 ) {
   const db = getAdminDb();
   const ref = col(db, COLLECTIONS.users).doc(uid);
-  const snap = await tx.get(ref);
-  if (!snap.exists) throw new Error(`User ${uid} not found`);
   const patch: Partial<UserDoc> = { updatedAt: Date.now() } as Partial<UserDoc>;
   if (typeof opts.balance === "number") patch.balance = opts.balance;
   if (typeof opts.taskBalance === "number") patch.taskBalance = opts.taskBalance;
