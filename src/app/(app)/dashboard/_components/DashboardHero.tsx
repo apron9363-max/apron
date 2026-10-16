@@ -171,4 +171,3 @@ export function DashboardHero({ user, apnRate, planDoc }: DashboardHeroProps) {
 }
 
 export default DashboardHero;
-

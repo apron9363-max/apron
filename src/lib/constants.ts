@@ -44,5 +44,24 @@ export const PLAN_IDS = {
   elite: "elite",
 } as const;
 
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://apron-two.vercel.app";
+const FALLBACK_SITE_URL = "https://apron-two.vercel.app";
+
+/**
+ * Resolve the public base URL used to build shareable links (referrals, email
+ * verification). A localhost value is only meaningful for local development;
+ * in a production build it must never be used, so it falls back to the
+ * production domain. This guards against `.env.local` (which has higher
+ * precedence than `.env.production`) or a dashboard env var leaking
+ * `http://localhost:3000` into shared referral links.
+ */
+function resolveSiteUrl(): string {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/+$/, "");
+  const pointsToLocalhost =
+    !!configured && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(configured);
+  if (configured && !(process.env.NODE_ENV === "production" && pointsToLocalhost)) {
+    return configured;
+  }
+  return FALLBACK_SITE_URL;
+}
+
+export const SITE_URL = resolveSiteUrl();
