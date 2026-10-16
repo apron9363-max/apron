@@ -8,7 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { registerSchema } from "@/lib/validations/schemas";
+import { Select } from "@/components/ui/Select";
+import {
+  registerSchema,
+  REGISTER_COUNTRIES,
+} from "@/lib/validations/schemas";
 import {
   createSessionFromIdToken,
   signInWithEmailAndPassword,
@@ -18,6 +22,15 @@ import { registerUserAction, sendVerificationEmailAction } from "@/server/action
 export const dynamic = "force-dynamic";
 
 type FormValues = z.infer<typeof registerSchema>;
+
+const COUNTRY_OPTIONS = REGISTER_COUNTRIES.map((c) => ({
+  value: c.name,
+  label: `${c.name} (${c.dialCode})`,
+}));
+
+const COUNTRY_DIAL_CODES: Record<string, string> = Object.fromEntries(
+  REGISTER_COUNTRIES.map((c) => [c.name, c.dialCode]),
+);
 
 function RegisterContent() {
   const router = useRouter();
@@ -40,6 +53,7 @@ function RegisterContent() {
       name: prefillName,
       email: prefillEmail,
       phone: "",
+      country: "",
       password: "",
       confirmPassword: "",
       referralCode: refCode,
@@ -157,6 +171,20 @@ function RegisterContent() {
           placeholder="adaeze@example.com"
           error={errors.email?.message}
           {...register("email")}
+        />
+        <Select
+          label="Country *"
+          placeholder="Select your country"
+          options={COUNTRY_OPTIONS}
+          error={errors.country?.message}
+          {...register("country")}
+          onChange={(country) => {
+            setValue("country", country, { shouldValidate: true });
+            const dialCode = COUNTRY_DIAL_CODES[country];
+            if (dialCode) {
+              setValue("phone", `${dialCode} `, { shouldValidate: true });
+            }
+          }}
         />
         <Input
           label="Phone *"

@@ -8,6 +8,18 @@ const passwordMinRules = z
   .regex(PASSWORD_UPPER, "Password must include at least one uppercase letter")
   .regex(PASSWORD_DIGIT, "Password must include at least one number");
 
+export const REGISTER_COUNTRIES = [
+  { name: "Nigeria", dialCode: "+234" },
+  { name: "Uganda", dialCode: "+256" },
+  { name: "Ghana", dialCode: "+233" },
+  { name: "Kenya", dialCode: "+254" },
+  { name: "Burkina Faso", dialCode: "+226" },
+  { name: "South Africa", dialCode: "+27" },
+  { name: "Malawi", dialCode: "+265" },
+] as const;
+
+export type RegisterCountry = (typeof REGISTER_COUNTRIES)[number]["name"];
+
 export const registerSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters").max(80),
@@ -17,6 +29,13 @@ export const registerSchema = z
       .min(8, "Enter a valid phone")
       .max(20, "Phone too long")
       .regex(/^[+\d][\d\s-]{7,}$/, "Invalid phone format"),
+    country: z
+      .string()
+      .min(1, "Country is required")
+      .refine(
+        (v) => REGISTER_COUNTRIES.some((c) => c.name === v),
+        "Select an approved country",
+      ),
     password: passwordMinRules,
     confirmPassword: passwordMinRules,
     referralCode: z
