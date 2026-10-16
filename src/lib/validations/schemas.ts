@@ -19,7 +19,10 @@ export const registerSchema = z
       .regex(/^[+\d][\d\s-]{7,}$/, "Invalid phone format"),
     password: passwordMinRules,
     confirmPassword: passwordMinRules,
-    referralCode: z.string().max(16).optional().or(z.literal("")),
+    referralCode: z
+      .string()
+      .min(1, "Referral code is required")
+      .max(16, "Referral code is too long"),
   })
   .refine((v) => v.password === v.confirmPassword, {
     message: "Passwords do not match",

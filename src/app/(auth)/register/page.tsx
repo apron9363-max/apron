@@ -179,11 +179,16 @@ function RegisterContent() {
           {...register("confirmPassword")}
         />
         <Input
-          label="Referral code (optional)"
-          placeholder="Leave blank if none"
+          label="Referral code *"
+          placeholder="e.g. K77UHTTD"
           error={errors.referralCode?.message}
           {...register("referralCode")}
         />
+
+        <div className="rounded-xl border border-apron-gold/40 bg-apron-gold/10 p-3 text-sm text-apron-gold">
+          Don&apos;t have a referral code? A referral code is required to register.
+          Please contact a coach to obtain one before creating your account.
+        </div>
 
         <Button type="submit" size="lg" loading={submitting} className="mt-2 w-full">
           {submitting ? "Creating account…" : "Create account"}
